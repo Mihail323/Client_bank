@@ -13,38 +13,91 @@ private:
     double money;
     double rate;
     int time;
-public:
-    void set(double m = 0, double r= 0, int t = 0)
+
+    double findValue(double m, double r, int t)
     {
+        return m * pow((1 + r / 100), t);
+    }
+    double result()
+    {
+        return findValue(money, rate, time);
+    }
+    double result(double m, int t)
+    {
+        double m1, m2;
+        m1 = findValue(money, rate, time);
+        if (t > time)
+        {
+            return m1;
+        }
+        else
+        {
+            m2= findValue(m, rate, time-t);
+            return m1 + m2;
+        }
+    }
+    void showTable(bool style=false)
+    {
+        cout << "| Name\t\t|" << " Sum\t|"<<" Time\t|";
+        if (style)
+        {
+            cout << " ADSum\t|" << " Time\t|";
+        }
+        cout << " Rate\t|" << " Total sum\t|" << endl;
+    }
+    void showData()
+    {
+        cout << "| " << Name << "\t|";
+        cout << " " << money << "\t|";
+        cout << " " << time << "\t|";
+        cout << " " << rate << "\t|";
+        cout << " " << result() << "\t|\n" << endl;
+    }
+    void showData(double m, int t)
+    {
+        cout << "| " << Name << "\t|";
+        cout << " " << money << "\t|";
+        cout << " " << time << "\t|";
+        cout << " " << m << "\t|";
+        cout << " " << time-t << "\t|";
+        cout << " " << rate << "\t|";
+        cout << " " << result(m, t) << "\t|\n" << endl;
+    }
+    
+public:
+    void setAll(string N,double m, double r, int t)
+    {
+        Name = N;
         money = m;
         rate = r;
         time = t;
     }
-    void setName(string N)
+    void setAll(string N)
     {
-        Name = N;
+        setAll(N, 100, 13, 3);
     }
-    double result()
+    void show(double m,int t) 
     {
-        return money * pow((1 + rate / 100), time);
+        showTable(true);
+        showData(m, t);
     }
-    void show() 
+    void show(double m)
     {
-        cout << "Информация по вкладчику:" << endl;
-        cout << "Имя: " << Name << endl;
-        cout << "Сумма вклада: " << money << " руб" << endl;
-        cout << "Ставка: " << rate << " руб" << endl;
-        cout << "Срок вклада: " << time << " лет" << endl;
-        cout << "Итоговая сумма депозита: " << result() << " руб" << "\n" << endl;
+        show(m, 1);
     }
-    Client_bank(string N) {
-        setName(N);
-        set();
+    void show()
+    {
+        showTable();
+        showData();
+    }
+    Client_bank(string N) 
+    {
+        setAll(N);
         show();
     }
-    Client_bank(string N, double m, double r, int t) {
-        setName(N);
-        set(m, r, t);
+    Client_bank(string N, double m, double r, int t) 
+    {
+        setAll(N, m, r, t);
         show();
     }
 };
@@ -53,8 +106,14 @@ int main()
 {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
-    Client_bank Ivanov("Иванов");
-    Client_bank Petrov("Петров", 10000, 6, 6);
+    Client_bank Ivanov("Иванов И.И.");
+    Ivanov.show(30, 2);
+    Ivanov.show(29);
+    Client_bank Petrov("Петров П.П.", 90, 18, 4);
+    Petrov.setAll("Сидоров С.С.");
+    Petrov.show();
+    Petrov.show(50,5);
     system("pause");
     return 0;
 }
+        
